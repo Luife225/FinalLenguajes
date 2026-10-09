@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: videojuegos-api
+    runtime: python
+    plan: free
+    rootDir: ProyectoLenguajes
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: python manage.py migrate --noinput && gunicorn videojuegos_recomendador.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: DB_ENGINE
+        value: postgresql
+      - key: DB_NAME
+        value: postgres
+      - key: DB_PORT
+        value: "5432"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: RAWG_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false

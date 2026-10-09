@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Favoritos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h1 class="text-2xl font-bold text-center mb-6">Mis Favoritos</h1>
+        {% if favoritos %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for favorito in favoritos %}
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <img src="{{ favorito.imagen }}" alt="{{ favorito.nombre }}" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h2 class="text-xl font-bold">{{ favorito.nombre }}</h2>
+                        <p class="text-gray-600">Rating: {{ favorito.rating }}</p>
+                        <p class="text-gray-600">Género: {{ favorito.genero }}</p>
+                        <p class="text-gray-600">Plataforma: {{ favorito.plataforma }}</p>
+                        <form method="POST" action="{% url 'remove_favorito' favorito.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-md">Quitar de Favoritos</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600">Aún no tienes juegos guardados.</p>
+        {% endif %}
+        <div class="text-center mt-6">
+            <a href="{% url 'home' %}" class="text-blue-500">Volver a la Página Principal</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado de la Recomendación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h1 class="text-2xl font-bold text-center mb-6">Resultados de tu Recomendación</h1>
+
+        {% if videojuegos %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for juego in videojuegos %}
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <img src="{{ juego.background_image }}" alt="{{ juego.name }}" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h2 class="text-xl font-bold">{{ juego.name }}</h2>
+                        <p class="text-gray-600">Rating: {{ juego.rating }}</p>
+                        <p class="text-gray-600">Género: {% for g in juego.genres %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                        <p class="text-gray-600">Plataforma: {% for p in juego.platforms %}{{ p.platform.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                        {% if user.is_authenticated %}
+                            <form method="POST" action="{% url 'add_favorito' juego.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded-md">❤️ Agregar a Favoritos</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600">No se encontraron videojuegos que coincidan con tus preferencias.</p>
+        {% endif %}
+
+        {% if destacados %}
+            <div class="mt-10">
+                <h2 class="text-2xl font-bold text-center mb-6">Recomendaciones Destacadas</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for nombre in destacados %}
+                        <div class="bg-yellow-200 p-4 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold">{{ nombre }}</h3>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="text-center mt-6">
+            <a href="{% url 'index' %}" class="text-blue-500">Volver al Recomendador</a>
+        </div>
+    </div>
+</body>
+</html>
