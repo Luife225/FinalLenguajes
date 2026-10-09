@@ -1,27 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MainLayout } from '../layouts/MainLayout';
 import { FavoriteCard } from '../components/FavoriteCard';
 import { GameDetailsDialog, SelectedGame } from '../components/GameDetailsDialog';
 import { useFavorites } from '../hooks/useFavorites';
-import { useAuth } from '../hooks/useAuth';
-import { Heart, Compass, Sparkles } from 'lucide-react';
+import { Heart, Compass } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { DURATION, EASE, STAGGER, OFFSET, prefersReducedMotion } from '../utils/animationConstants';
 
 export const Favoritos = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
   const { favorites, removeFavorite } = useFavorites();
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedGame, setSelectedGame] = useState<SelectedGame | null>(null);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
 
   useGSAP(() => {
     if (prefersReducedMotion() || favorites.length === 0) return;
@@ -76,7 +68,7 @@ export const Favoritos = () => {
         {/* Grid de favoritos */}
         {favorites.length > 0 ? (
           <div>
-            <div className="grid-responsive" style={{ marginBottom: 'var(--sp-12)' }}>
+            <div className="results-grid" style={{ marginBottom: 'var(--sp-12)' }}>
               {favorites.map((favorito) => {
                 const game = {
                   id: String(favorito.id),

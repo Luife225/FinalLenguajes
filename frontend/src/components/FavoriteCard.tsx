@@ -10,7 +10,7 @@ interface FavoriteCardProps {
 
 export const FavoriteCard = ({ game, onRemove, onOpenDetails }: FavoriteCardProps) => {
   return (
-    <div className="card">
+    <article className="card result-card">
       <button type="button" className="game-card-trigger" onClick={onOpenDetails} aria-label={`Ver detalles de ${game.title}`}>
       {/* Cover image */}
       <div className="card-img">
@@ -62,6 +62,6 @@ export const FavoriteCard = ({ game, onRemove, onOpenDetails }: FavoriteCardProp
           Quitar de Favoritos
         </button>
       </div>
-    </div>
+    </article>
   );
 };
